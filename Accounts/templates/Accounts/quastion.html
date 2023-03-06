@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+   
+
+
+{% endblock %}
+{% block title %}
+     سوالات
+{% endblock %}
+{% block body %}
+<div dir="rtl" class="animate__animated animate__fadeInDown" style="width: 80%; margin-left: auto; margin-right: auto; position: relative;top: 80px; margin-bottom: 130px;">
+    {% for que in question %}
+     <a class="btn shadow-none d-flex align-items-center justify-content-between bg-secondary text-white w-100" data-toggle="collapse" href="#navbar-{{que.id}}" style="height: 65px; margin-bottom: 10px; padding: 0 30px; border-radius: 25px;">
+         <h5 class="m-0">{{que.que}} </h5>
+         <i class="fa fa-angle-down text-dark"></i>
+     </a>
+     <nav class="collapse navbar navbar-vertical navbar-light bg-transparent  align-items-center mb-2" id="navbar-{{que.id}}">
+         <div class="navbar-nav w-100 overflow-hidden" >
+             <div  style="text-align: start; display: flex; justify-content: space-between;" class="nav-item dropdown">
+                
+                 <a  style="width: 100%;"   dir="rtl" data-id=""  data-name="" class="nav-link" > 
+                    {% if que.answer %}
+                    {{que.answer}}
+                    {% else %}
+                    در انتظار پاسخ
+                    {% endif %}           
+                 </a>
+             </div>
+            
+         </div>
+     </nav>
+     {% endfor %}
+
+ </div>
+ 
+
+{% endblock %}
+
+{% block script %}
+<script>
+    document.getElementById('nav-question').classList.add('active')
+</script>
+{% endblock %}
+

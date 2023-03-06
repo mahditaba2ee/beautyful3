@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% load humanize %}
+{% block title %}
+    categoroies
+{% endblock %}
+
+
+
+{% block css %}
+
+
+
+
+<meta charset="utf-8">
+<title>کارت شما</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+<link rel="stylesheet" href="{% static 'Orders/css/cart.css'%}">
+
+
+{% endblock %}
+  
+{% block body %}
+
+    
+ <!-- <div class="col-lg-6 col-6 text-right animate__animated animate__fadeInLeft">
+    <form action="">
+        <div class="input-group">
+            <input type="text"  class="form-control" dir="rtl" placeholder="جستجو پیشرفته">
+            <div class="input-group-append">
+                <span style="border: none;" class="input-group-text bg-transparent text-primary">
+                    <i  class="fa fa-search"></i>
+                </span>
+            </div>
+        </div>
+    </form>
+</div> -->
+
+<div class="container-fluid pt-5 animate__animated animate__fadeInLeft">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5 body-tbl">
+            <table  id="tbl" class="table  text-center mb-0">
+                <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>محصول</th>
+                        <th>قیمت واحد</th>
+                        <th>تعداد</th>
+                        <th>قیمت کل</th>
+                        <th>پاک کردن</th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle">
+                    {% for c in cart %}
+
+                    <tr class="" id="row{{c.product.id}}">
+                       
+                        <td class="align-middle">
+                            {% for img in c.product.image_to_product.all %}
+                            {% if forloop.first %}
+                                <img src="{{img.image.url}}"  alt="" style="width: 50px;">
+                            {% endif %}
+                            {% endfor %}
+                           <a href="{{c.product.get_absoulut_url}}">{{c.product.name}}</a></td>
+                        <td class="align-middle">{{c.price|intcomma:False}}</td>
+                        <td class="align-middle">
+                            <div class="input-group quantity mr-3" style="width: 130px;">
+                                <div class="input-group-btn">
+                                    <button onclick="btn_change_number_product('minus',this,'cart')" data-id="{{c.product.id}}" class="btn btn-primary btn-minus" >
+                                    <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input onchange="txt_num_product(this,'cart')" id="product_number{{c.product.id}}" data-id="{{c.product.id}}" type="text" class="form-control bg-secondary text-center" value="{{c.number}}" id="number_product">
+                                <div class="input-group-btn">
+                                    <button  onclick="btn_change_number_product('plus',this,'cart')" data-id="{{c.product.id}}" class="btn btn-primary btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td id="price{{c.product.id}}" class="align-middle">{{c.total|intcomma:False}}</td>
+                        <td onclick="remove_cart(this)" data-id_product="{{c.product.id}}" class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <form  class="mb-5" action="">
+                <div class="input-group">
+                    <input id="input_copon"  type="text" class="form-control p-4 text-right disabled" placeholder="بن تخفیف">
+                    <div class="input-group-append">
+                        <a onclick="copon_click()"  class="btn btn-primary">اجرا </a>
+                    </div>
+                </div>
+            </form>
+            <div dir="rtl" class="card border-secondary mb-5">
+                <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0 text-right">فاکتور خرید</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">قیمت کل</h6>
+                        <h6 id="total_price" class="font-weight-medium">{{cart.get_order_price|intcomma:False}}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">هزینه ارسال</h6>
+                        <h6 id="price_post"  class="font-weight-medium">{{cart.get_price_send_product|intcomma:False}}</h6>
+                    </div>
+                </div>
+                <div  class="card-footer border-secondary bg-transparent">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5 class="font-weight-bold">قیمت کل با هزینه پست</h5>
+                        <h5 id="price_with_post_price" class="font-weight-bold">{{cart.get_order_price|intcomma:False}}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div  class="card border-secondary mb-5">
+                <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0 text-right">روش پرداخت</h4>
+                </div>
+                <div style="text-align: right;" class="card-body">
+                    <div class="form-group">
+                        <div  class="custom-control custom-radio">
+                            <input checked onchange="type_pay()" data-pay_type="pay_online" type="radio" class="custom-control-input pay_type" name="payment" id="paypal">
+                            <label class="custom-control-label" for="paypal">پرداخت انلاین</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            <input onchange="type_pay()" data-pay_type="pay_home" type="radio" class="custom-control-input pay_type" name="payment" id="directcheck">
+                            <label class="custom-control-label" for="directcheck">پرداخت درب منزل</label>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="custom-control custom-radio">
+                            <input onchange="type_pay()" data-pay_type="pay_person" type="radio" class="custom-control-input pay_type" name="payment" id="banktransfer">
+                            <label class="custom-control-label" for="banktransfer">دریافت حضوری</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer border-secondary bg-transparent">
+
+
+                    <a onclick="buy_click()" class="btn btn-block btn-primary my-3 py-3">خرید  </a>
+
+
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+
+<script src="{% static 'Orders/js/cart.js'%}"></script>
+
+<script src="{% static 'Category/js/main.js'%}"></script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

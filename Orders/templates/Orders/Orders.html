@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% load humanize %}
+{% block title %}
+    categoroies
+{% endblock %}
+
+
+
+{% block css %}
+
+
+
+
+<meta charset="utf-8">
+<title>کارت شما</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+
+
+{% endblock %}
+  
+{% block body %}
+
+    
+ <div class="col-lg-6 col-6 text-right mx-auto" style="position: relative; top: 80px;">
+    <form action="" method="GET">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" dir="rtl" placeholder="جستجو پیشرفته">
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text bg-transparent text-primary">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid pt-5" style="position: relative; top: 80px;">
+    <div class="row px-xl-5">
+        {% for order in orders %}
+        <div class="col-lg-8 table-responsive mb-5 orders mx-auto" id="tbl{{order.id}}">
+          
+            <table class="table table-bordered text-center mb-0" >
+                <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>محصول</th>
+                        <th>قیمت واحد</th>
+                        <th>تعداد</th>
+                        <th>قیمت کل</th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="align-middle">
+                    
+                    {% for item in order.orderitem_to_order.all %}
+                    <tr class="animate__animated animate__fadeInLeft" id="row{{c.product.id}}">
+                       
+                        <td class="align-middle"><a href="{{item.product.get_absoulut_url}}">{{item.product.full_name}}</a></td>
+                        <td class="align-middle">{{item.price|intcomma:False}}</td>
+
+                        <td id="price{{c.product.id}}" class="align-middle">{{item.number}}</td>     
+                        
+                        <td id="price{{c.product.id}}" class="align-middle">{{item.get_cost|intcomma:False}}</td>
+                       
+                    </tr>
+                    {% endfor %} 
+                </tbody>
+                
+            </table>
+            <div dir="rtl" class="text-right">
+                <p >آدرس: {{order.ostan}}-{{order.city}}-{{order.address}} </p>
+                <p >کد پستی: {{order.codepsty}} </p>
+
+                <p >شماره تماس: {{order.phone}} </p>
+                <p >نام: {{order.name}} </p>
+                <p >آدرس: {{order.address}} </p>
+                <p >قیمت کل: {{order.price_all|intcomma:False}} </p>
+                <p >قیمت با تخفیف: {{order.price_off|intcomma:False}} </p>
+                <p >قیمت با هزینه ارسال: {{order.price_with_post|intcomma:False}} </p>
+                {% if order.pay_type == 'pay_home'%}
+                     <p > نوع ارسال: تحویل درب منزل </p>
+                {% elif order.pay_type == 'pay_person'%}
+                <p > نوع ارسال: تحویل در مکان </p>
+                {% elif order.pay_type == 'pay_online'%}
+                <p > نوع ارسال: پرداخت انلاین   </p>
+                {% endif %}
+                {% if order.user_view %}
+                <p > بازدید شده توسط:{{order.user_view.username}} </p>
+            
+              {% endif %}
+                
+                                
+                <a  onclick="order_click(this)" data-id="{{order.id}}" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">تایید </a>
+                <a onclick="printer_order(this)" data-id="{{order.id}}" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">چاپ فاکتور </a>
+
+
+
+            </div>
+           
+            <br>
+           
+        </div>
+        {% endfor %}
+        
+    </div>
+</div>
+
+
+
+
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+
+<script src="{% static 'Orders/js/orders.js'%}"></script>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

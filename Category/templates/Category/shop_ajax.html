@@ -1,0 +1,123 @@
+{% load extra_tags %}
+
+{% load humanize %}
+
+<style>
+
+@keyframes slideLeft {
+	0% {
+		transform: translateX(150%);
+	}
+	50%{
+		transform: translateX(-8%);
+	}
+	65%{
+		transform: translateX(4%);
+	}
+	80%{
+		transform: translateX(-4%);
+	}
+	95%{
+		transform: translateX(2%);
+	}			
+	100% {
+		transform: translateX(0%);
+	}
+}
+
+
+
+
+.products{
+    animation: slideLeft;
+    animation-duration: 1s;
+}
+
+</style>
+{% if page_type == 'type_list' %}
+<div class="col-12 pb-1" >
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="dropdown ml-4 ">
+                
+    <select  id="order_value" class="btn border dropdown-toggle order" name="category_option" onchange="oreder_change(value)"   dir="ltr" style="height:55px ;" >
+            <option value="{{order}}">فیلتر بر اساس</option>
+            <option data-id="-all_price" id="category" value="-all_price" >گرانترین</option>
+            <option data-id="all_price" id="category" value="all_price" >ارزانترین</option>
+            <option data-id="all_price" id="category" value="-created" >جدیدترین</option>
+            <option data-id="all_price" id="category" value="-like_count" >بیشترین لایک</option>
+
+        
+    </select>
+</div>
+    </div>
+</div>
+{% endif %}
+
+{% for product in products %}
+<div id="category_slug" data-category_slug="{{product.category.slug}}" class="m-3 col-lg-3 mx-auto">
+    <div style="width: 100%; height: 400px;" class="card product-item  mb-4 item products">
+        <div class="card-header product-img  position-relative overflow-hidden bg-transparent">
+        {% for img in product.image_to_product.all %}
+            {% if forloop.first %}
+            <a href="{{product.get_absoulut_url}}">
+                <img class="img-fluid w-100 " style="height: 100%;" src="{{img.image.url}}" alt="">
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="card-body border-left border-right text-center p-0 pt-4 pb-5">
+            <h4 class="text-truncate pb-2">{{product.name}}</h4>
+            <div class="d-flex justify-content-center">
+                                
+                {% if product.special %}
+                <h6>{{product.off_price|intcomma|persianize_digits}}</h6><h6 class="text-muted ml-2"></h6>
+                <del>{{product.all_price|intcomma|persianize_digits}}</del>
+                {% else %}
+                <h6>{{product.all_price|intcomma|persianize_digits}}</h6><h6 class="text-muted ml-2"></h6>
+                {% endif %}
+
+
+            </h6>
+        </div>
+        </div>
+        <div class="card-footer card-btn d-flex justify-content-between bg-light border">
+            <a href="{{product.get_absoulut_url}}" class="btn btn-sm text-dark p-0 "><i class="fas fa-eye text-primary mr-1"></i>جزییات</a>
+           <i style="cursor: pointer; margin-right:25px;" onclick="like_product(this,'home')" data-id_product="{{product.id}}" data-status="{% if request.user in product.like.all %}dislike{% else %}like{% endif %}"
+            class="fas fa-heart {% if request.user in product.like.all %}text-danger{% endif %}  ml-4"><a class="ml-2" id="likecounter{{product.id}}"></a></i>
+           
+            <a onclick="add_product(this,'home')" data-id="{{product.id}}" data-status="{% if product.id in buys %}sell{% else %}buy{% endif %}"  class="btn btn-sm {% if product.id in buys %}text-danger{% endif %} p-0"><i class="fas fa-shopping-cart  mr-1"></i> </a>
+        </div>
+    </div>
+</div>
+
+    {% endfor %}
+
+   <div class="col-12 pb-1 text-center">
+        
+        
+
+        <nav style="display: inline-block;box-shadow: none;" aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if products.has_previous %}
+              <li class="page-item p-2"><a class="page-link" onclick="page_click(this)" data-num="1">اول</a></li>
+
+              <li class="page-item p-2"><a class="page-link" onclick="page_click(this)" data-num="{{ products.previous_page_number }}">{{ products.previous_page_number|persianize_digits }}</a></li>
+              {% endif %}
+             
+              <li class="page-item p-2 {% if p == p %} active {% endif %} "><a class="page-link " data-num="{{p}}" onclick="page_click(this)">{{p|persianize_digits}}</a></li>
+              {% if products.has_next %}
+              <li class="page-item p-2"><a class="page-link"  data-num="{{ products.next_page_number }}" onclick="page_click(this)">{{ products.next_page_number|persianize_digits }}</a></li>
+                {% for num in products.paginator %}
+                    {% if forloop.last %}
+                        <li class="page-item p-2"><a class="page-link"  data-num="{{num.number}}" onclick="page_click(this)">آخر</a></li>
+
+                    {% endif%}
+                {% endfor %}
+
+              {% endif %}
+             
+             
+           
+            </ul>
+          </nav>
+    </div>

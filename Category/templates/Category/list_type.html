@@ -1,0 +1,137 @@
+
+{% extends 'base.html' %}
+{% load static%}
+{% load humanize %}
+{% block title %}
+    categoroies
+{% endblock %}
+
+
+{% block css %}
+<meta charset="utf-8">
+<title>دسته بندی جزیی</title>
+
+<link rel="stylesheet" href="{% static 'Category/css/list_type.css'%}">
+{% endblock %}
+  
+{% block body %}
+<div class="container">
+    <section class="category-section">
+    <p>دسته بندی محصولات</p>
+    
+    <div class="row">
+        {% for type in typies %}
+        <div class="category-box col-lg-2 col-md-4 col-xs-12 col-sm-6 {% if type_category.available == False %} notavailable{% endif %} animate__animated animate__fadeInTopRight" >
+
+            <div class="part">
+             <img style="cursor: pointer;" class="show-type" onclick="type_product_click(this)" data-id="{{type.id}}" src="{{type.image.url}}" alt="">
+            
+                {% if type_category.available == False %}
+                    <span class="note">بزودی</span>
+                {% endif %}
+            </div>
+            <a href="{{ type_category.get_absoulut_url }}"><span class="part">{{type.name}}</span></a>
+
+        
+        </div>
+        {% endfor %}
+
+      
+
+
+
+
+
+
+
+
+        
+       
+       
+    </div>
+        
+</div>
+
+
+<div class="container-fluid pt-5 " id="show-type">
+    <div class="row px-xl-5">
+        <div class="col-lg-12 col-md-12">
+            <div id="product" class="row pb-3">
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-0 mb-4">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                {% for img in product.iproduct.all %}
+                                {% if forloop.first %}
+                                <img class="img-fluid w-100" src="{{img.image.url}}" alt="">
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3">{{product.name}}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6>{{product.price}}</h6><h6 class="text-muted ml-2">
+                                        {% if product.off_price %}
+                                        <del>{{product.off_price}}</del>
+                                        {% endif %}
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between bg-light border">
+                                <a href="{{product.get_absoulut_url}}" class="btn btn-sm text-dark p-0 "><i class="fas fa-eye text-primary mr-1"></i>جزییات</a>
+                               <i style="cursor: pointer;" onclick="likebtn(this)" data-id_product="{{product.id}}" data-status="{% if request.user in product.like.all %}dislike{% else %}like{% endif %}"
+                                class="fas fa-heart {% if request.user in product.like.all %}text-danger{% else %}text-primary {% endif %}  ml-4"><a class="ml-2" id="likecounter{{product.id}}">{{product.like.count}}</a></i>
+                               
+                                <a data-id="{{product.id}}" data-status="{% if product.id in buys %}sell{% else %}buy{% endif %}" data-slug="{{product.slug}}" data-name="{{product.name}}"
+                                 onclick="sendproduct(this)"
+                                 class="btn btn-sm text-dark p-0"><i class=" {% if product.id in buys %}text-danger {% else %}text-primary{% endif %} fas fa-shopping-cart  mr-1"></i>افزودن به کارت</a>
+                            </div>
+                        </div>
+                </div>
+                    {% endfor %}
+                <div class="col-12 pb-1 text-center">
+                
+                    <nav style="display: inline-block;" aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% if products.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page=1">اول</a></li>
+
+                          <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">قبل</a></li>
+                          {% endif %}
+                        {% for num in products.paginator %}
+                        
+                          <li class="page-item {% if num.number == p %} active {% endif %}"><a class="page-link " href="?page={{num.number}}">{{num.number}}</a></li>
+                          {% endfor %}
+                          <!-- <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                          <li class="page-item"><a class="page-link" href="?page=3">3</a></li> -->
+                        {% if products.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">بعدی</a></li>
+                          <li class="page-item"><a class="page-link" href="?page={{ products.paginator.num_pages }}">اخر</a></li>
+
+                       {% endif %}
+                        </ul>
+                      </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="{% static 'base/js/site/jquery.js' %}"></script>
+
+<script src="{% static 'Category/js/list_type.js'%}"></script>
+{% endblock %}

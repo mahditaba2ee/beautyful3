@@ -1,0 +1,75 @@
+
+
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+    <link rel="stylesheet" href="{% static 'Accounts/css/contant_us.css'%}" >
+
+   
+{% endblock %}
+{% block title %}
+    صفحه ورود
+{% endblock %}
+{% block body %}
+
+
+
+
+
+
+<div class="container-fluid pt-5 animate__animated animate__fadeInDown" style="top: 50px;position: relative;">
+    <div class="sec-titile text-center mb-4">
+        <span class="px-2">سوالات</span>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col-lg-7 mb-5" style="background-color: lightpink; padding: 10px;margin: 10px;">
+            <div class="contact-form">
+                <div id="success"></div>
+                <form name="sentMessage" id="contactForm" novalidate="novalidate" action="" method="POST">
+                    <div class="control-group">
+                        <input  type="text" class="form-control text-right" id="txt_name"  name="txt_name" placeholder="نام شما" value="{{user.get_ful_name}}" required="required" data-validation-required-message="Please enter your name">
+                        <p class="help-block text-danger"></p>
+                    </div>
+                  
+                    <div class="control-group">
+                        <textarea  class="form-control text-right" rows="6" id="txt_question" name="txt_question" placeholder="سوال" required="required" data-validation-required-message="Please enter your message"></textarea>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    {% csrf_token %}
+                    <div>
+                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">ارسال
+                            </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-5 mb-5 text-right">
+            <h5 class="font-weight-semi-bold mb-3">اطلاعات فروشگاه</h5>
+            <p> </p>
+            <div class="d-flex flex-column mb-3">
+                <h5 class="font-weight-semi-bold mb-3"> ارتباط با ما </h5>
+                <p dir="rtl" class="mb-2" ><i class="fa fa-map-marker-alt text-primary ml-3"></i>اصفهان - حسن آباد جرقویه - خ امام حسین</p>
+                <p dir="rtl" class="mb-2"><i class="fa fa-envelope text-primary ml-3"></i>beautyful@gmail.com</p>
+                <p  class="mb-2 text-right">+98 9134303981<i class="fa fa-phone-alt text-primary ml-3"></i></p>
+            </div>
+           
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+
+
+
+
+<script  src="{% static 'Accounts/js/login_register.js'%}"></script>
+
+
+<script>
+    document.getElementById('nav-content').classList.add('active')
+</script>
+
+{% endblock %}

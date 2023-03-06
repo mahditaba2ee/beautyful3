@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+   
+{% endblock %}
+{% block title %}
+    صفحه ورود
+{% endblock %}
+{% block body %}
+
+<div id="main" class="main animate__animated animate__fadeInDown" style="height: 650px; top: 80px; margin-bottom: 130px;">  	
+    <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form method="post" enctype="multipart/form-data" action="" id="form_register">
+                <label class="text-primary" for="chk" aria-hidden="true"> پروفایل</label>
+                <input  type="text" value="{{user.name}} {{user.family}}" name="txt_name" placeholder="نام   " required="">
+                <input onchange="txt_change(this,'username')" onkeyup="txt_change(this,'username')" type="text" value="{{user.username}}" name="txt_username" placeholder="نام کاربری  " required="">
+                {% csrf_token %}
+
+                <input  type="email" onkeyup="txt_change(this,'email')" name="txt_email" value="{{user.email}}" placeholder="ایمیل" required="">
+                <input onkeyup="txt_change(this,'phone')" onchange="txt_change(this,'phone')" type="text" value="{{user.phone}}" name="txt_phone" placeholder="شماره موبایل" required="">
+                <textarea name="txt_address" id="" cols="10" style="height: 150px;"  rows="10">{{user.address}} </textarea>
+                <input name="img" type="file" value="" style="height: 50px;">
+
+                <button type="submit" class="btn btn-primary" > تایید </button>
+            </form>
+        </div>
+
+      
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+
+
+
+<script  src="{% static 'Accounts/js/profile.js'%}"></script>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,136 @@
+{% load static %}
+{% load extra_tags %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="{% static 'base/owlcarousel/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base/owlcarousel/owl.theme.default.min.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- <meta name="viewport" content="width=device-width"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> -->
+
+    
+
+
+
+    <link rel="stylesheet" href="{% static 'base/css/base_coustom.css' %}">
+    <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
+
+
+    {% block css %}
+    
+    
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'base/css/base_style.css' %}">
+
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body onload="loaded_body()">
+    
+        <div class="loader" hidden id="loader"></div>
+    <section id="all_site">
+    {% if page != 'home' %}
+        {% include 'inc/navbar.html'%}
+    {% endif %}
+        {% if messages %}
+        {% for msg in messages %}
+            <p style="z-index: 5; " id="message" class="alert alert-{{msg.tags}} message">{{msg}}</p>
+        {% endfor %}
+        {% endif %}
+        <p id="message" style="z-index: 5;"  hidden class="alert alert-primary message animate__animated animate__fadeInRight"></p>
+        
+<div  id="kesho" class="kesho" >
+
+    <div class="closes">
+        <p onclick="hiden_kesho()"  class="fas fa-close "></p>
+    </div>
+{% for category in categories %}
+    <div class="body-category">
+        <div class="category">
+            <p>{{category.name}}</p>
+            <i class="fa fa-chevron-down" data-id="{{category.id}}" onclick="type_show(this)"></i>
+        </div>
+        <div id="type-category{{category.id}}" class="type-category">
+            {% for type in category.type_to_category.all %}
+            <a hidden>{{type.name}}</a>
+            {% endfor %}
+            
+            
+
+        </div>
+      
+    </div>
+    {% endfor %}
+  
+
+</div>
+
+<div  id="nav_kesho_right" class="kesho-cart" >
+    <div class="closes">
+        <p onclick="hiden_kesho_cart(close=true)"  class="fas fa-close "></p>
+    </div>
+    <div  id="all_cart_item" class="all_cart_item">
+    {% for c in cart %}
+    <div id="row-cart-{{c.product.id}}" class="body-category">
+        <div class="cart-item">
+            <div class="col-4 img">
+                {% for img in c.product.image_to_product.all %}
+                        {% if forloop.first %}
+                            <img src="{{img.image.url}}" alt="">
+                        {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-8 body">
+                <p>{{c.product.name}}</p>
+                <h6>تعداد: {{c.number}}</h6>
+                <h6>{{c.all_price|intcomma|persianize_digits}}</h6>
+
+            </div> 
+        </div>
+    </div>
+    {% endfor %}
+    <div  class="price_order">
+        <p>قیمت کل: {{cart.get_order_price|intcomma|persianize_digits}}</p>
+        <a href="{% url 'Orders:cart_view'%}">خرید</a>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+        {% block body %}{% endblock %}
+
+        {% include 'inc/foother.html'%}
+    
+
+
+        
+    </section>
+    
+</body>
+
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+<script src="{% static 'base/js/site/jquery.js' %}"></script>
+<script src="{% static 'base/js/site/easing.min.js'%}"></script>
+<script src="{% static 'base/js/site/owl.carousel.min.js'%}"></script>
+<script src="{% static 'base/js/site/jqBootstrapValidation.min.js' %}"></script>
+<script src="{% static 'base/js/site/main.js' %}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'base/owlcarousel/owl_costum.js' %}"></script>
+
+
+{% block script %}{% endblock %}
+</html>

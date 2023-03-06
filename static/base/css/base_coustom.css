@@ -1,0 +1,288 @@
+@font-face {font-family: IRANSans;font-style: normal;src: url('../fonts/IRANSans/IRANSans.eot')};
+@keyframes slideLeft {
+	0% {
+		transform: translateX(150%);
+	}
+	50%{
+		transform: translateX(-8%);
+	}
+	65%{
+		transform: translateX(4%);
+	}
+	80%{
+		transform: translateX(-4%);
+	}
+	95%{
+		transform: translateX(2%);
+	}			
+	100% {
+		transform: translateX(0%);
+	}
+}
+
+
+
+
+
+body{
+	background-image: url(" https://beauty.s3.ir-thr-at1.arvanstorage.com/1.jpg");
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+    transition: 1s;
+}
+.night{
+    background-color: #042136;
+}
+.message{
+	width: 80%;
+    background-color: rgb(222, 190, 236);
+   text-align: right;
+   
+   position: fixed;
+   z-index: 150;
+	right: 10%;
+	bottom: 5%;
+  }
+
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+	z-index: 50000;
+	position: fixed;
+	top: 50%;
+	right: 50%;
+	margin-top: -60px;
+	margin-right: -60px;
+	
+	
+	
+ }
+ .products {
+
+    border-radius: 25px;
+}
+.card{
+ border-radius: 25px;
+}
+.card-btn{
+    border-radius: 0px 0px 25px 25px ;
+}
+.item{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+.item img{
+
+    border-radius: 50px 20px;
+
+}
+
+ #product .card{
+    height: 350px;
+	padding: 20px;
+}
+
+.page-link{
+    padding: 10px;
+    border-radius: 250px;
+    background-color: rgb(231, 173, 219);
+    color: black;
+    outline: none;
+    border: none;
+    transition: 1s;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+  }
+  @media (min-width: 992px) {
+
+    .body-nav{
+        margin-top: 100px;
+    }
+    #product .card{
+        height: 500px;
+		
+    }
+}
+
+
+.kesho{
+    width: 300px; 
+    height: 100%;
+    max-height: 100%; 
+    position: absolute; 
+    background-color: rgb(255, 255, 255); 
+    color: rgb(131, 8, 8);
+    opacity: 1;
+    z-index: 1000; 
+    top: 0; 
+    display: block;
+    left: -2000px;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    transition: 1s;
+   z-index: 1200;
+    direction: rtl;
+    overflow-y: scroll;
+	opacity: 1;
+
+}
+
+.kesho .category {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 1) 0px 25px 20px -20px;
+    font-size: 25px;
+    margin: 10px;
+    background-color: aliceblue;
+    
+}
+.kesho .closes {
+    margin-top: 25px;
+    margin-right: 25px;
+    text-align: right;
+}
+
+
+.kesho .closes p{
+    font-size: 25px;
+    color: rgb(134, 135, 138);
+    cursor: pointer;
+}
+.kesho .category p{
+    margin-right: 10px;
+    margin-top: 10px;
+    
+
+}
+.kesho .category i{
+    background-color: aliceblue;
+    padding: 10px;
+    align-items: center;
+    margin: 10px;
+    border-radius: 25px;
+
+
+}
+.kesho .type-category{
+    width: 80%;
+    background-color: #f3f1f1;
+    margin: auto;
+    transition: 1s;
+      transform: scaleY(0);    
+  transform-origin: top;
+  transition: transform 0.26s ease;
+    text-align: right;
+    height: 0;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+
+}
+
+.kesho .type-category a{
+    color: rgb(0, 0, 0);
+  display: block;
+  padding: 10px;
+  font-size: 25px;
+  
+
+}
+.kesho .type-category a:hover{
+   opacity: .1;
+}
+
+
+
+
+.kesho-cart{
+    width: 300px; 
+    height: 90%;
+    max-height: 93%; 
+    position: fixed; 
+    background-color: rgb(255, 255, 255); 
+    color: rgb(131, 8, 8);
+    opacity: 1;
+    z-index: 1000; 
+    top: 0; 
+    display: block;
+    right: -2000px;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    transition: 1s;
+	z-index: 1200;
+   
+    direction: rtl;
+    overflow-y: scroll;
+}
+.kesho-cart .price_order{
+    position: fixed;
+    width: 300px;
+    height: 13%;
+    bottom: 0;
+    background-color: aliceblue;
+    align-items: center;
+    text-align: center;
+    color: black;
+}
+.kesho-cart .price_order p{
+    margin: 2px;
+    font-size: 25px;
+
+}
+.kesho-cart .price_order a{
+    font-size: 25px;
+    background-color: rgb(248, 196, 255);
+    padding: 5px 20px;
+    border-radius: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+    top: 10px;
+    position: relative;
+    color: #110c0c;
+}
+.kesho-cart .closes{
+    margin-top: 25px;
+    margin-left: 25px;
+    text-align: left;
+    font-size: 25px;
+    color: rgb(134, 135, 138);
+    cursor: pointer;
+    position: static;
+}
+.cart-item{
+    display: flex;
+    justify-content: center;
+    height: 130px;
+    margin-bottom: 20px;
+    box-shadow: rgba(167, 82, 82, 0.45) 0px 25px 20px -20px;
+    padding: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+}
+.cart-item .img{
+	padding: 0;
+}
+.cart-item .img img{
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    border-radius: 250px;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    padding: 3px;
+
+}
+.cart-item .body p{
+    font-size: 25px;
+    color: #110c0c;
+
+}
+
+#all_site{
+    opacity: .1;
+    transition: 1s;
+}

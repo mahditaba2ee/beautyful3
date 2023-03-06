@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% load humanize %}
+{% block title %}
+    categoroies
+{% endblock %}
+
+
+
+{% block css %}
+<meta charset="utf-8">
+<title>فاکتور شما</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="Free HTML Templates" name="keywords">
+<meta content="Free HTML Templates" name="description">
+
+<link href="{%  static 'category/css/stylehome.css'%}" rel="stylesheet">
+
+
+
+{% endblock %}
+  
+{% block body %}
+
+
+
+
+
+   
+
+
+
+    <!-- Checkout Start -->
+    <div  class="container-fluid pt-5">
+        <div class="row px-xl-5" style="z-index: 1;top: 50px;position: relative; margin-bottom: 100px;">
+            <div style="background-color: lightpink;" class="col-lg-8">
+                <div class="mb-4">
+                    <h4 class="font-weight-semi-bold mb-4 text-right">مشخصات</h4>
+                    <form id="form_information" dir="rtl" class="row">
+                        <div class="col-md-6 form-group text-right">
+                            <label>نام و نام خانوادگی</label>
+                            <input value="{{user.name}} {{user.family}}" id="name" name="txt_fulname" class="form-control" type="text" placeholder="علی">
+                        </div>
+                       
+                        <div class="col-md-6 form-group text-right">
+                            <label>ایمیل (اختیازی)</label>
+                            <input value="{{user.email}}" id="email" name="txt_email" class="form-control" type="text" placeholder="example@email.com">
+                        </div>
+                        <div class="col-md-6 form-group text-right">
+                            <label>شماره تماس</label>
+                            <input value="{{user.phone}}" id="phone" name="txt_phone" class="form-control" type="text" placeholder="+98 912-1234567">
+                        </div>
+                        <div class="col-md-6 form-group text-right">
+                            <label>استان</label>
+                            <input id="ostan" name="txt_ostan" class="form-control" type="text" placeholder="تهران ">
+                        </div>
+                        <div class="col-md-6 form-group text-right">
+                            <label>شهرستان</label>
+                            <input id="city" name="txt_city" class="form-control" type="text" placeholder=" تعران">
+                        </div>
+                        <div class="col-md-6 form-group text-right">
+                            <label>کد پستی</label>
+                            <input id="55555-44444" name="txt_codeposty" class="form-control" type="text" placeholder="">
+                        </div>
+                        <div class="col-md-6 form-group text-right">
+                            <label>ادرس</label>
+                            <textarea  name="txt_address" id="address" class="form-control" type="text" placeholder="">{{user.address}}</textarea>
+                        </div>
+                      
+                    
+                    </form>
+                </div>
+              
+            </div>
+            <div class="col-lg-4">
+                <div dir="rtl" class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0 text-right">سبد شما </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="font-weight-medium mb-3 text-right">محصولات</h5>
+
+
+                    {% for item in cart %}
+                        <div class="d-flex justify-content-between">
+                            <p style="width: 30%; text-align:right ;">{{item.product.name}}</p>
+                            <p style="width: 20%; text-align:right ;">{{item.price|intcomma:False}}</p>
+                            <p style="width: 20%; text-align:center ;" >{{item.number}}</p>
+
+                            <p style="width: 30%; text-align:left ;">{{item.total|intcomma:False}}</p>
+
+
+
+                        </div>
+                        {% endfor %}
+                       
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">هزینه کل</h6>
+                            <h6 class="font-weight-medium">{{order_price|intcomma:False}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">هزینه کل با تخفیف</h6>
+                            <h6 class="font-weight-medium">{{order_price_with_off|intcomma:False}}</h6>
+                        </div>
+                        {% if pay_type != 'pay_person' %}
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">هزینه ارسال</h6>
+                            <h6 class="font-weight-medium">{{post_price|intcomma:False}}</h6>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">مبلغ قابل پرداخت</h5>
+                            <h5 class="font-weight-bold">{{get_order_price_with_post_price|intcomma:False}}</h5>
+                        </div>
+                    </div>
+                </div>
+        <a href="#" onclick="order_click()" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">تایید </a>
+        <a onclick="printer()" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">چاپ فاکتور </a>
+
+                
+            </div>
+        </div>
+
+    </div>
+
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<script src="{% static 'Orders/js/chechout.js'%}"></script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

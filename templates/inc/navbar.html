@@ -1,0 +1,139 @@
+
+<div onload="" class="container-fluid animate__animated animate__fadeInTopLeft">
+    <div class="row bg-secondary py-2 px-xl-5">
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="d-inline-flex align-items-center">
+                <a class="text-dark" href="{% url 'Accounts:quastion'%}">سوالات</a>
+                
+                <span class="text-muted px-2">|</span>
+                <a class="text-dark" href="{%url 'Accounts:contact'%}">پشتیبانی</a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center text-lg-right">
+            <div class="d-inline-flex align-items-center">
+              
+                <a class="text-dark px-2" href="https://instagram.com/mahdi_tabatabaee_" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="text-dark px-2" href="https://telegram.org/mahdi_tabatabaee_" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a class="text-dark pl-2" href="https://whatsapp.com/mahdi_tabatabaee_" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="box-top-sec" class="row align-items-center py-3 px-xl-5 mx-auto  box-top-sec">
+    <div class="col-lg-3 d-none d-lg-block">
+        <a onclick="show_div_hidden()"  class="text-decoration-none">
+            <h3 class="m-0 display-5"><span class="text-primary font-weight-bold border px-3 mr-1">P</span>Princess</h3>
+        </a>
+    </div>
+    <div class="col-lg-6 col-6 text-left">
+        <form method="GET" action="">
+            <div class="input-group">
+                <input style="border-radius: 25px;" value="{{text_search}}" type="text" class="form-control" dir="rtl" name="search" id="search" placeholder="جستجو(نام)">
+                <div onclick="search_click()" class="input-group-append">
+                    
+                    <button type="button" style="height: 100%;  border: none;" class="input-group-text text-danger bg-transparent">
+                        
+                        <i  class="fa fa-search"></i>
+                       
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-3 col-6 text-right">
+        <a href="{% url 'Category:like'%}" class="btn">
+            <i id="like_icon" class="fas fa-heart {%if all_like_me_count != 0 %}text-danger{% endif %}"></i>
+            <span id="len_like" class="badge">{{all_like_me_count}}</span>
+        </a>
+        <a onclick="hiden_kesho_cart()"  class="btn ">
+            <i id="shop_icon" class="fas fa-shopping-cart {%if len_cart != 0 %}text-danger{% endif %}"></i>
+            <span id="len_cart" class="badge">{{len_cart}}</span>
+        </a>
+    </div>
+</div>
+ 
+<div class="container-fluid mb-5 animate__animated animate__fadeInTopRight">
+    <div class="row border-top px-xl-5">
+     
+        <div class="col-lg-9 mx-auto">
+            <nav style="top: 100px;" class="navbar  navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 ">
+                <a onclick="show_div_hidden()" class="text-decoration-none d-block d-lg-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold px-3 mr-1">P</span>beauty</h1>
+                </a>
+                <button  dir="rtl" type="button" style="width: auto; border: none; outline: none;" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <h3  class="ml-1 mt-1 display-5"><span onclick="menu_icon_click(this)" class="text-primary font-weight-bold  px-3 mr-1 fa fa-chevron-down"></span>فهرست</h3>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between text-right nav-btn" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0 ">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'Accounts:logout' %}" class="nav-item nav-link">خروج</a>
+                        {% else %}
+                        <a id="nav-lagin" href="{% url 'Accounts:login_register' %}" class="nav-item nav-link">ثبت نام و ورود </a>
+                       {% endif %}
+                    </div>
+                    <div dir="rtl" class="navbar-nav mx-auto py-0">
+                        <a href="{% url 'Category:home'%}" class="nav-item nav-link ">صفحه اصلی</a>
+                        <a href="{% url 'Category:shop'%}" id="nav-shop" class="nav-item nav-link ">فروشگاه</a>
+                        <a href="{% url 'Category:type_product'%}" id="nav-type" class="nav-item nav-link ">دسته بندی جزیی</a>
+                        <div class="nav-item dropdown ">
+                            <a id="nav-prodile" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">پروفایل</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="{% url 'Orders:cart_view' %}" class="dropdown-item">کارت شما</a>
+                                <a href="{% url 'Orders:checkout'%}" class="dropdown-item">فاکتور</a>
+                                <a href="{% url 'Accounts:profile'%}" class="dropdown-item"> پروفایل</a>
+                            </div>
+                        </div>
+                        <a href="{%url 'Accounts:contact'%}" id="nav-content" class="nav-item nav-link ">تماس با ما</a>
+                        <a href="{% url 'Accounts:quastion'%}" id="nav-question" class="nav-item nav-link ">سوالات متداول  </a>
+                        <!-- <a id="nav-question" class="nav-item nav-link ">
+                            <div class="form-check form-switch">
+                            <input onchange="dark()" class="form-check-input" style="font-size: 20px;" type="checkbox" id="mySwitch" name="darkmode" value="yes">
+                            <label class="form-check-label mr-5" for="mySwitch">حالت شب</label>
+                          </div>  </a> -->
+                        
+
+
+                        
+                    {% if user.is_admin %}
+                    <div class="nav-item dropdown">
+                        <a id="nav-order" href="#" class="nav-link dropdown-toggle " data-toggle="dropdown">سبدها</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'Orders:orders' %}" class="dropdown-item">در حال انتظار</a>
+                            <a href="{% url 'Orders:archive_orders'%}" class="dropdown-item">تایید شده</a>
+                           
+
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a id="nav-add" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">افزودن</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'Category:add_slide'%}" class="dropdown-item">افزودن اسلایدر</a>
+                            <a href="{% url 'Category:add_product'%}" class="dropdown-item"> افزودن کالا</a>
+                            <a href="{% url 'Accounts:answer'%}" class="dropdown-item"> افزودن پاسخ</a>
+
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+
+
+
+                    </div>
+                   
+                </div>
+            </nav>
+           
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+   
+{% endblock %}
+{% block title %}
+    افزودن اسلاید 
+{% endblock %}
+{% block body %}
+
+<div dir="rtl" class="animate__animated animate__fadeInDown" style="width: 80%; margin-left: auto; margin-right: auto; position: relative;top: 100px;margin-bottom: 150px;">
+    {% for que in question %}
+    <div id="que_{{que.id}}">
+     <a id="que_{{que.id}}" class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-{{que.id}}" style="height: 65px; margin-bottom: 10px; padding: 0 30px;">
+        <input  class="m-0" value="{{que.que}}">
+         <i class="fa fa-angle-down text-dark"></i>
+     </a>
+     <nav class="collapse show navbar navbar-vertical navbar-light  align-items-center p-0 border border-top-0 border-bottom-0" id="navbar-{{que.id}}">
+         <div class="navbar-nav w-100 overflow-hidden" >
+             <div  style="text-align: start; display: flex; justify-content: space-between; " class="nav-item dropdown">
+                
+                 <input id="txt_que_{{que.id}}"  style=" width: 70%; color: black;" href=""  dir="rtl" data-id="" onclick="cat_change(this)" data-name="" class="nav-link" > 
+                <a onclick="answer(this)" data-id="{{que.id}}" class="btn btn-primary" style="margin:20px;">ارسال</a>         
+                 
+             </div>
+            
+         </div>
+     </nav>
+    </div>
+     {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+
+
+<script  src="{% static 'Accounts/js/answer.js'%}"></script>
+
+
+
+
+
+
+{% endblock %}
+

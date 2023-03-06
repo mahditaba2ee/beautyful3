@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+   
+{% endblock %}
+{% block title %}
+    افزودن اسلاید 
+{% endblock %}
+{% block body %}
+
+
+
+
+
+
+
+
+<div id="main" style="position: relative; top: 80px; margin-bottom: 130px;" class="main">  	
+    <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="signup">
+            <form method="POST" enctype="multipart/form-data" action="" id="form_register">
+                {% if slide %}
+                <label class="text-primary" for="chk" aria-hidden="true">ویرایش اسلاید</label>
+                {% else %}
+                <label class="text-primary" for="chk" aria-hidden="true">افزودن اسلاید</label>
+
+                {% endif %}
+                <input value="{{slide.title}}" type="text" name="txt_title" placeholder="موضوع" >
+                
+                <input value="{{slide.des}}" type="text" name="txt_des" placeholder="توضیح" >
+                <input value="{{slide.url}}" type="url" name="txt_url" placeholder="لینک " >
+                <input  type="file" name="img"   style="height: 40px;">
+                {% csrf_token %}
+
+                {% if slide %}
+                <button class="btn btn-primary" >ثبت  </button>
+                {% else %}
+                <button class="btn btn-primary" >ویرایش   </button>
+
+                {% endif %}
+                
+            </form>
+        </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+document.getElementById('nav-add').classList.add('active')
+
+</script>
+
+
+
+
+
+
+
+{% endblock %}
+

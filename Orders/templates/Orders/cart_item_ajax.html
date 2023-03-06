@@ -1,0 +1,30 @@
+{% load extra_tags %}
+{% load humanize %}
+
+{% for c in cart %}
+<div id="row-cart-{{c.product.id}}" class="body-category">
+    <div class="cart-item">
+        <div class="col-4 img">
+            {% for img in c.product.image_to_product.all %}
+                    {% if forloop.first %}
+                        <img src="{{img.image.url}}" alt="">
+                    {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-8 body">
+            <p>{{c.product.name}}</p>
+            <h6>تعداد: {{c.number}}</h6>
+
+            <h6>{{c.all_price|intcomma|persianize_digits}}</h6>
+
+        </div>
+
+        
+    </div>
+   
+  
+</div>
+{% endfor %}
+<div  class="price_order">
+    <p>قیمت کل: {{cart.get_order_price|intcomma|persianize_digits}}</p>
+</div>

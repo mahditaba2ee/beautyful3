@@ -1,0 +1,39 @@
+
+<style>
+@keyframes fadeIn {
+	0% {
+		transform: scale(0);
+		opacity: 0.0;		
+	}
+	60% {
+		transform: scale(1.1);	
+	}
+	80% {
+		transform: scale(0.9);
+		opacity: 1;	
+	}	
+	100% {
+		transform: scale(1);
+		opacity: 1;	
+	}		
+}
+.signup{
+	
+   animation: fadeIn;
+   animation-duration: 1s;
+  }
+
+</style>
+
+
+<input type="checkbox" id="chk" aria-hidden="true">
+
+<div class="signup">
+    <form id="form_register">
+        <label class="text-primary" for="chk" aria-hidden="true"> ثبت کد</label>
+        <input type="text" name="txt_otpcode" id="txt_otpcode" placeholder="کد ارسال شده" required="">
+        
+        
+        <a onclick="otpcode_click(this)" class="btn btn-primary" >ثبت  </a>
+    </form>
+</div>

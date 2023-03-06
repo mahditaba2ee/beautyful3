@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+   
+{% endblock %}
+{% block title %}
+    صفحه ورود
+{% endblock %}
+{% block body %}
+
+
+
+
+
+
+
+
+<div id="main" class="main" style="top: 100px; position: relative; margin-bottom: 150px;" >  	
+    <input type="checkbox" id="chk" aria-hidden="true" >
+    
+        <div class="signup">
+            <form id="form_register">
+                <label class="text-danger" for="chk" aria-hidden="true"> ثبت نام</label>
+                <input type="text" name="txt_username" placeholder="نام کاربری  " required="">
+                {% csrf_token %}
+                <input type="email" name="txt_email" placeholder="ایمیل" required="">
+                <input type="text" name="txt_phone" placeholder="شماره موبایل" required="">
+                <input type="password" name="txt_password1" placeholder="رمز عبور" required="">
+                <input type="password" name="txt_password2" placeholder="رمز عبور" required="">
+
+                <a onclick="register_click(this)" class="btn btn-primary" >ثبت نام </a>
+            </form>
+        </div>
+
+        <div class="login">
+            <form id="form_login">
+                <label for="chk" aria-hidden="true">ورود</label>
+                <input id="txt_email" type="email" name="email" placeholder="ابمیل" required="">
+                <input id="txt_password" type="password" name="" placeholder="رمز عبور" required="">
+                <h5>رمز عبور را فراموش کرده ام؟<a href="{% url 'Accounts:passwordreset'%}">بازیابی رمز </a></h5>
+                <p class="input" onclick="login_click(this)">ورود</p>
+            </form>
+        </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+
+
+
+<script  src="{% static 'Accounts/js/login_register.js'%}"></script>
+
+
+
+
+{% endblock %}
+

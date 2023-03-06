@@ -1,0 +1,396 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extra_tags %}
+
+
+{% load humanize %}
+{% block title %}
+    جزییات
+{% endblock %}
+<style>
+
+    
+</style>
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Category/css/detail.css'%}">
+
+{% endblock %}
+  
+{% block body %}
+
+
+
+
+
+
+
+
+<div class="container-fluid py-5">
+   
+    <div class="row px-xl-5">
+        <div class="col-lg-5 pb-5">
+            <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner border">
+                    {% for img in product.image_to_product.all %}
+                    {% if forloop.first %}
+                    <div class="carousel-item active">
+                        <img class="w-100 " style="height: 450px;" src="{{img.image.url}}" alt="Image">
+                    </div>
+                   
+                    {% else %}
+                    <div class="carousel-item">
+                        <img class="w-100 " style="height: 450px;" src="{{img.image.url}}" alt="Image">
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                </a>
+                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-7 pb-5 text-right">
+            <h3 id="id_product" data-id="{{product.id}}" class="font-weight-semi-bold">{{product.name}}</h3>
+            <div class="d-flex mb-3">
+                <div class="text-primary mr-2">
+                    <strong id="avarage_rank" class="">0</strong>
+
+                    <strong style="color: yellow;" class="fas fa-star"></strong>
+              
+                </div>
+                <small id="count_rank" class="pt-1">0</small>
+            </div>
+            {% if product.special %}
+            <del style="font-size: 20px; text-align: end; color: black;">{{product.all_price|intcomma:False}}</del>
+            {{product.off_price|intcomma:False}}
+            {% else %}
+            {{product.all_price|intcomma:False}}
+            {% endif %}
+            <h3 class="font-weight-semi-bold mb-4">{{product.price|intcomma:False}}</h3>
+            
+            <p class="mb-4" style="font-size: 20px; text-align: end; color: black;">{{product.des}}</p>
+            
+            <div class="d-flex align-items-center mb-4 pt-2">
+                <div class="input-group quantity mr-3" style="width: 130px;">
+                    <div class="input-group-btn">
+                        <button onclick="btn_change_number_product('minus',this)" data-id="{{product.id}}" class="btn btn-primary btn-minus" >
+                        <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <input onchange="txt_num_product(this)" id="product_number{{product.id}}" data-id="{{product.id}}" type="text" class="form-control bg-secondary text-center" value="{{number}}" id="number_product">
+                    <div class="input-group-btn">
+                        <button onclick="btn_change_number_product('plus',this)" data-id="{{product.id}}" class="btn btn-primary btn-plus">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <button data-status="{% if product.id in buys %}sell{% else %}buy{% endif %}" onclick="sendproduct(this)" data-id="{{product.id}}" class="btn btn-primary px-3 btn-buy-product">
+                 <i id="product_add"  class="fa fa-shopping-cart mr-1 {% if product.id in buys %}text-danger{% endif %}">
+                 </i><small id="product_add_title">{% if product.id in buys %}حذف از کارت{% else %}افزودن به کارت{% endif %}</small></button>
+
+                 <i style="cursor: pointer;" onclick="like_product(this,'home')" data-id_product="{{product.id}}" data-status="{% if request.user in product.like.all %}dislike{% else %}like{% endif %}"
+                 class="fas fa-heart {% if request.user in product.like.all %}text-danger{% endif %}  ml-4"><a class="ml-2" id="likecounter{{product.id}}">{{product.like.count}}</a></i>
+            </div>
+            <!-- <div class="d-flex pt-2">
+                <p class="text-dark font-weight-medium mb-0 mr-2">کپی لینک:</p>
+                <div class="d-inline-flex">
+                    <a class="text-dark px-2" href="">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="text-dark px-2" href="">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a class="text-dark px-2" href="">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a class="text-dark px-2" href="">
+                        <i class="fab fa-pinterest"></i>
+                    </a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1">محصولات مشابه</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">اطلاعات </a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-3">نظرات <strong id="count_rang"></strong></a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade" id="tab-pane-1">
+                    <div class="container-fluid py-5">
+                        <div class="text-center mb-4">
+                        </div>
+                        <div class="row px-xl-5">
+                            <div class="col">
+                                <div class="owl-carousel owl-theme">
+                                    {% for s_product in simiar_products %}
+                                        {% if s_product.id != product.id %}
+                                        <div class="m-3">
+                                            <div style="width: 100%;" class="card product-item  mb-4 item">
+                                                <div class="card-header h-100 product-img  position-relative overflow-hidden bg-transparent">
+                                                {% for img in s_product.image_to_product.all %}
+                                                    {% if forloop.first %}
+                                                    <a href="{{product.get_absoulut_url}}">
+                                                        <img class="img-fluid w-100 p-3" style="height: 100%;" src="{{img.image.url}}" alt="">
+                                                    </a>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-5">
+                                                    <h4 class="text-truncate pb-2">{{product.name}}</h4>
+                                                    <div class="d-flex justify-content-center">
+                                                        
+                                                            {% if s_product.special %}
+                                                            <h6>{{s_product.off_price|intcomma|persianize_digits}}</h6><h6 class="text-muted ml-2"></h6>
+                                                            <del>{{product.all_price|intcomma|persianize_digits}}</del>
+                                                            {% else %}
+                                                            <h6>{{product.all_price|intcomma|persianize_digits}}</h6><h6 class="text-muted ml-2"></h6>
+                                                            {% endif %}
+                                
+                                
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer card-btn d-flex justify-content-between bg-light border">
+                                                    <a href="{{product.get_absoulut_url}}" class="btn btn-sm text-dark p-0 "><i class="fas fa-eye text-primary mr-1"></i>جزییات</a>
+                                                   <i style="cursor: pointer; margin-right:25px;" onclick="like_product(this,'home')" data-id_product="{{product.id}}" data-status="{% if request.user in product.like.all %}dislike{% else %}like{% endif %}"
+                                                    class="fas fa-heart {% if request.user in product.like.all %}text-danger{% endif %}  ml-4"><a class="ml-2" id="likecounter{{product.id}}"></a></i>
+                                                   
+                                                    <a onclick="add_product(this,'home')" data-id="{{product.id}}" data-status="{% if product.id in buys %}sell{% else %}buy{% endif %}"  class="btn btn-sm {% if product.id in buys %}text-danger{% endif %} p-0"><i class="fas fa-shopping-cart  mr-1"></i> </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+                <div class="tab-pane fade" id="tab-pane-2">
+                    <h4 dir="rtl" class="mb-3 text-right">برند {{product.brand.name}}:</h4>
+                    <p class="text-right">{{product.brand.des}}</p>
+                    <div dir="rtl" class="row text-right">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-sx-6" style="width: 50%;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-0">
+                                    نوع محصول
+                                </li>
+                                <li class="list-group-item px-0">
+                                    نام برند
+                                </li>
+                                <li class="list-group-item px-0">
+                                    نام محصول
+                                </li>
+                                <li class="list-group-item px-0">
+                                    قیمت
+                                </li>
+                              </ul> 
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6" style="width: 50%;">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-0">
+                                {{product.category.name}}
+                                </li>
+                                <li class="list-group-item px-0">
+                                    {{product.brand.name}}
+                                </li>
+                                <li class="list-group-item px-0">
+                                {{product.full_name}}
+                                </li>
+                                <li class="list-group-item px-0">
+                                    {% if product.special %}
+                                {{product.off_price|intcomma:False}} 
+                                ---
+                                <del>{{product.all_price|intcomma:False}}</del>
+                                {% else %}
+                                {{product.all_price|intcomma:False}}
+                                {% endif %}
+                                </li>
+                              </ul> 
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade active show" id="tab-pane-3">
+                    <div class="row">
+                        <div id="div_comment" class="col-md-6 " style="max-height: 500px;height: auto;overflow-x: auto;">
+
+                            {% for comment in comments %}
+                            <div class="media mb-4">
+                            {% if comment.user.image %}
+                                <img src="{{comment.user.image.url}}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
+                                {% else %}
+                                <img src="" alt="NO Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
+
+                                {% endif %}
+                                
+                                <div class="media-body">
+                                    <h6>{{comment.user.name}} <small> - <i>{{comment.created|timesince}}</i></small></h6>
+                                    <p>{{comment.body}}</p>
+                                    <p class="" style="cursor: pointer;" data-username="{{comment.user.username}}" data-comment_id="{{comment.id}}"  data-user_id="{{comment.user.id}}"   dir="ltr" onclick="reply_comment(this)" ><a style="color: black;" href="#top">پاسخ</a> <i class="fas fa-reply"></i></p>
+                                    
+
+                                </div>
+                            </div>
+                            {% for r_comment in comment.replycomment_to_comment.all %}
+                            <div class="media mb-4" style="width: 90%;left: 50px;position: relative;">
+                                {% if r_comment.user.image %}
+                                <img src="{{r_comment.user.image.url}}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
+                                {% else %}
+                                <img src="" alt="NO Image" class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px;">
+
+                                {% endif %}
+
+                                <div class="media-body">
+                                    <h6>{{r_comment.user.name}} <small> - <i>{{r_comment.created|timesince}}</i></small></h6>
+                                    <p>{{r_comment.body}}</p>
+                                    <p class="" style="cursor: pointer;" data-username="{{r_comment.user.username}}" data-comment_id="{{comment.id}}"   dir="ltr" onclick="reply_comment(this)" ><a style="color: black;" href="#top">پاسخ</a> <i class="fas fa-reply"></i></p>
+
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                            {% endfor %}
+
+                        </div>
+                        <div class="col-md-6" style="background-color: rgb(207, 206, 205); text-align: right; margin: 15px;">
+                            <h4 class="mb-4">ثبت نطر شما</h4>
+                            <small dir="rtl">نظر شما بدون بازبینی ادمین ثبت می شود برای ثبت نظر باید لاگین کنید .</small>
+                            <div dir="rtl" class="d-flex my-3 ">
+                                <p dir="" class="mb-0 mr-2">ستاره: </p>
+                                <div class="text-primary" data-id="{{product.id}}"  onmouseleave="star_leave(this)">
+                                   
+                                    <i id="btn1" data-rank="1" data-id="{{product.id}}" onclick="star_click(this)" onmousemove="star_mouse_move(this,1)" onmouseleave="star_mouse_leave(1)" class="fa fa-star"></i>
+                                    <i id="btn2" data-rank="2" data-id="{{product.id}}" onclick="star_click(this)" onmousemove="star_mouse_move(this,2)" onmouseleave="star_mouse_leave(2)" class="fa fa-star"></i>
+                                    <i id="btn3" data-rank="3" data-id="{{product.id}}" onclick="star_click(this)" onmousemove="star_mouse_move(this,3)" onmouseleave="star_mouse_leave(3)" class="fa fa-star"></i>
+                                    <i id="btn4" data-rank="4" data-id="{{product.id}}" onclick="star_click(this)" onmousemove="star_mouse_move(this,4)" onmouseleave="star_mouse_leave(4)" class="fa fa-star"></i>
+                                    <i id="btn5" data-rank="5" data-id="{{product.id}}" onclick="star_click(this)" onmousemove="star_mouse_move(this,5)" onmouseleave="star_mouse_leave(5)" class="fa fa-star"></i>
+                              
+                                </div>
+
+                            </div>
+
+
+                            <div class="rankink-star">
+                                <div class="ranking">
+                                  <label for="">5</label>
+                                  <div id="rank5"  class="ranking star-rankink"></div>
+                                </div>
+                                <div class="ranking">
+                                  <label for="">4</label>
+                                  <div id="rank4"  class="ranking star-rankink"></div>
+                        
+                                </div>
+                        
+                                <div class="ranking">
+                                  <label for="">3</label>
+                                  <div id="rank3"  class="ranking star-rankink"></div>
+                        
+                                </div>
+                                <div class="ranking">
+                                  <label for="">2</label>
+                                  <div id="rank2"  class="ranking star-rankink"></div>
+                        
+                                </div>
+                                <div class="ranking">
+                                  <label for="">1</label>
+                                  <div id="rank1"  class="ranking star-rankink"></div>
+                        
+                                </div>
+                              </div>
+                              <a name="top"></a>
+                                    <textarea  dir="rtl" id="comment_body" placeholder="نظر شما" cols="30" rows="5" class="form-control mb-3"></textarea>
+                                
+                               
+                                    <a onclick="sumbit_comment(this)" data-product_id="{{product.id}}" data-productslug="{{product.slug}}" data-catslug="{{product.category.slug}}" data-brandslug="{{product.brand.slug}}"  class="btn btn-primary px-3 mb-2">ثبت نظر</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+{% block script %}
+<script src="{% static 'Category/js/detail.js'%}"></script>
+<script src="{% static 'Category/js/main.js'%}"></script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    category
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'Accounts/css/login_register.css'%}" >
+
+
+{% endblock %}
+  
+    {% block body %} 
+   
+
+
+    <div id="main" class="main" style="position: relative; top: 80px; margin-bottom: 130px; height: 830px;">  	
+        <input type="checkbox" id="chk" aria-hidden="true" >
+    
+            <div class="signup" style="height: 830px;">
+                <form  id="form_add_product" method="post" enctype="multipart/form-data" style="height: 100%;">
+                    {% csrf_token %}
+                    <label class="text-primary" for="chk" aria-hidden="true"> ثبت کالا</label>
+                    <select  id="category_option" name="category_option" onchange="change_category(value)"   dir="ltr" style="height:55px ;" >
+                        <option  >انتخاب نوع محصول</option>
+                        <option  id="category" value="add" >افزودن</option>
+                        {% for cat in categories %}
+                            <option data-id="{{cat.id}}" id="category" value="{{cat.id}}" >{{cat.name}}</option>
+                        {% endfor %}
+                    
+                        
+                    </select>
+
+                    <select   style="height:55px ;" id="type_option" name="type_option"  >
+                        <option selected >انتخاب نوع </option>
+
+                    </select>
+
+                    <select style="height:55px ;" id="brand_option" name="brand_option"  dir="ltr" >
+                        <option   selected>انتخاب نوع برند</option>
+                    </select>
+                    <input type="text" name="name"  placeholder="نام" required="">
+                    
+                    <input type="text" name="full_name" placeholder="نام کامل" required="">
+                    <input type="text" name="all_price" placeholder="قیمت کل" required="">
+                    <input type="text" name="off_price" placeholder="قیمت با تخفیف" required="">
+                    <textarea style="height: 100px;" name="des" id="" cols="5" rows="10" placeholder="توضیح"></textarea>
+                    <input type="file" name="images[]" id="images" placeholder="  عکس" required="" style="height: 50px;" multiple>
+    
+                    <button type="submit" class="btn btn-primary" >ثبت نام </button>
+                </form>
+            </div>
+    
+    </div>
+
+
+
+
+
+    {% endblock %}
+
+
+
+
+
+{% block script %}
+<script src="{% static 'Category/js/add_product.js'%}"></script>
+
+
+
+
+
+
+{% endblock %}
